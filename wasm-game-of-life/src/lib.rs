@@ -36,7 +36,7 @@ impl Universe {
     }
 
     fn live_neighbor_count(&self, row: u32, column: u32) -> u8 {
-        let mut count= 0;
+        let mut count = 0;
         for delta_row in [self.height - 1, 0, 1].iter().cloned() {
             for delta_col in [self.width - 1, 0, 1].iter().cloned() {
                 if delta_row == 0 && delta_col == 0 {
@@ -53,13 +53,13 @@ impl Universe {
     }
     pub fn tick(&mut self) {
         let mut next = self.cells.clone();
-    
+
         for row in 0..self.height {
             for col in 0..self.width {
                 let idx = self.get_index(row, col);
                 let cell = self.cells[idx];
                 let live_neighbors = self.live_neighbor_count(row, col);
-    
+
                 let next_cell = match (cell, live_neighbors) {
                     (Cell::Alive, x) if x < 2 => Cell::Dead,
                     (Cell::Alive, 2) | (Cell::Alive, 3) => Cell::Alive,
@@ -75,6 +75,8 @@ impl Universe {
     }
 
     pub fn new() -> Universe {
+        utils::set_panic_hook();
+
         let width = 64;
         let height = 64;
 
@@ -90,7 +92,7 @@ impl Universe {
         Universe {
             width,
             height,
-            cells
+            cells,
         }
     }
 
